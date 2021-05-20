@@ -22,9 +22,3 @@ ENV POETRY_VIRTUALENVS_CREATE=false
 
 RUN git clone https://github.com/pyenv/pyenv.git ~/.pyenv && \
     cd ~/.pyenv && src/configure && make -C src
-
-ENV PYTHON_VERSION=3.9.2
-
-RUN pyenv install $PYTHON_VERSION && pyenv global $PYTHON_VERSION
-
-RUN pip install poetry
