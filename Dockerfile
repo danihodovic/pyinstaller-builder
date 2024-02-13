@@ -7,18 +7,19 @@
 # the Python interpreter with its modules (and also probably bootloader) on the
 # oldest system you have around, so that it gets linked with the oldest version
 # of GLIBC.
-FROM ubuntu:16.04
+FROM ubuntu:22.04
 
-RUN apt-get update && apt-get install --no-install-recommends \
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install --no-install-recommends -y \
   make build-essential libssl-dev \
   zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
   libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev \
-  liblzma-dev ca-certificates git patchelf -y
+  liblzma-dev ca-certificates git patchelf
 
 ENV PYENV_ROOT="/root/.pyenv"
 ENV PATH="$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH"
 ENV PYTHON_CONFIGURE_OPTS=--enable-shared
 ENV POETRY_VIRTUALENVS_CREATE=false
 
-RUN git clone https://github.com/pyenv/pyenv.git ~/.pyenv && \
-    cd ~/.pyenv && src/configure && make -C src
+RUN curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
